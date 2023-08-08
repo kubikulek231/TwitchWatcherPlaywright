@@ -40,11 +40,8 @@ class BrowserHandler:
         browser_path = self._playwright.firefox.executable_path
         dir_path = os.path.dirname(browser_path)
         cfg_path = os.path.join(dir_path, "playwright.cfg")
-        home_path = os.path.expanduser('~')
-        print(home_path)
-        modified_string = cfg_path.replace("/root", home_path)
-        print(modified_string)
-        with open(modified_string, "r") as file:
+        cfg_path.replace("/root", os.environ['HOME'])
+        with open(cfg_path, "r") as file:
             lines = file.readlines()
             for line in lines:
                 if 'pref("media.volume_scale", "0.0")' in line:
