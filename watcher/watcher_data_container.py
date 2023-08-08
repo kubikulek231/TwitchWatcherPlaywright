@@ -12,10 +12,10 @@ class WatcherRoutineState(Enum):
 
 class WatcherInputDataContainer:
     def __init__(self, channels: list, cookie_data: dict,
-                 channel_search_interval: int = 300,
-                 channel_details_interval: int = 10,
-                 chat_claim_interval: int = 60,
-                 drop_inventory_interval: int = 180
+                 channel_search_interval: int = 900,
+                 channel_details_interval: int = 20,
+                 chat_claim_interval: int = 180,
+                 drop_inventory_interval: int = 360
                  ):
         self.channels = channels
         self.cookie_data = cookie_data
