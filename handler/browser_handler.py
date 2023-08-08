@@ -40,8 +40,7 @@ class BrowserHandler:
         browser_path = self._playwright.firefox.executable_path
         dir_path = os.path.dirname(browser_path)
         cfg_path = os.path.join(dir_path, "playwright.cfg")
-        if "root" in cfg_path:
-            cfg_path = cfg_path.replace("/root", os.path.expanduser("~"))
+        cfg_path = os.path.expanduser(cfg_path)
         with open(cfg_path, "r") as file:
             lines = file.readlines()
             for line in lines:
@@ -53,8 +52,7 @@ class BrowserHandler:
         browser_path = self._playwright.firefox.executable_path
         dir_path = os.path.dirname(browser_path)
         cfg_path = os.path.join(dir_path, "playwright.cfg")
-        if "root" in cfg_path:
-            cfg_path = cfg_path.replace("/root", os.path.expanduser("~"))
+        cfg_path = os.path.expanduser(cfg_path)
         with open(cfg_path, "a") as file:
             file.write('\n// Force Firefox volume to 0'
                        '\npref("media.volume_scale", "0.0");')
