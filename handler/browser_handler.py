@@ -40,6 +40,8 @@ class BrowserHandler:
         browser_path = self._playwright.firefox.executable_path
         dir_path = os.path.dirname(browser_path)
         cfg_path = os.path.join(dir_path, "playwright.cfg")
+        if "/root/" in cfg_path:
+            cfg_path = cfg_path.replace("/root", os.path.expanduser("~"))
         with open(cfg_path, "r") as file:
             lines = file.readlines()
             for line in lines:
