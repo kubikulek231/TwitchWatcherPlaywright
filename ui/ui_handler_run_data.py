@@ -47,6 +47,8 @@ class UIDataManager:
 
     @staticmethod
     def _shorten_string(text, length):
+        if text is None:
+            return "None"
         if len(text) <= length:
             return text
         else:
@@ -54,6 +56,8 @@ class UIDataManager:
 
     @staticmethod
     def _format_string_to_list(text, length):
+        if text is None:
+            return ["None"]
         return_list = []
         if len(text) <= length:
             return_list.append(text)
