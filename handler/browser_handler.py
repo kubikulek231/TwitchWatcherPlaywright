@@ -162,21 +162,24 @@ class BrowserHandler:
         except playwright.sync_api.TimeoutError:
             pass
 
-    def elements_is_any_present(self, xpath: str):
+    def elements_is_any_present(self, xpath: str) -> bool:
         page = self._page_list[self._tab_index_current]
-        script = "return document.evaluate('" + xpath.replace("'", "\\'") + "', document, null, XPathResult.ANY_TYPE," \
-                                                                            " null).iterateNext() !== null;"
         try:
-            page.evaluate(script)
+            element_list = page.query_selector_all(xpath)
+            if element_list is not None:
+                return len(element_list) > 0
+            return False
         except Exception:
-            pass
+            return False
 
-    def elements_click_all(self, xpath: str):
+    def elements_click_all(self, xpath: str) -> bool:
         page = self._page_list[self._tab_index_current]
-        script = "var buttons = document.evaluate('" + xpath.replace("'", "\\'") + "', document, null, " + \
-                 "XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);for (var i = 0; i < buttons.snapshotLength; i++)" + \
-                 " { buttons.snapshotItem(i).click(); }"
         try:
-            page.evaluate(script)
+            element_list = page.query_selector_all(xpath)
+            for element in element_list:
+                element.click()
+            if element_list is not None:
+                return len(element_list) > 0
+            return False
         except Exception:
-            pass
+            return False

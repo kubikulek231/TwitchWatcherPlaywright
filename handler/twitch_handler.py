@@ -26,9 +26,11 @@ class TwitchHandler:
         return self._browser_handler.element_click('//*[@id="channel-player-gate"]/div/div/div[4]/div/button')
 
     def twitch_stream_player_unmute(self) -> bool:
-        RandomSleep.sleep(2, 1)
+        RandomSleep.sleep(2, 3)
         volume_slider_element_xpath = '//input[@class="ScRangeInput-sc-q01wc3-0 ePJIVh tw-range"]'
         volume_slider_element = self._browser_handler.element_is_present(volume_slider_element_xpath)
+        if volume_slider_element is None:
+            return False
         if volume_slider_element.get_attribute('aria-valuenow') == '0':
             return self._browser_handler.element_click('//*[@id="channel-player"]/div/div[1]/div[2]/div/div[1]/button')
         return False

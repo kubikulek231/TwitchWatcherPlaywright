@@ -123,7 +123,7 @@ class WatcherRoutine:
     @using_tab(2)
     def perform_drop_inventory_collect_drop(self) -> bool:
         if self._twitch_handler.twitch_drop_inventory_is_claimable():
-            if self._twitch_handler.twitch_drop_inventory_claim():
+            if not self._twitch_handler.twitch_drop_inventory_claim():
                 raise WatcherError("Failed to claim drop")
             oc = self.output_data_container
             if oc.drop_claimed_num is None:
