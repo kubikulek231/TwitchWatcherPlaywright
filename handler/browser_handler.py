@@ -41,6 +41,7 @@ class BrowserHandler:
         dir_path = os.path.dirname(browser_path)
         cfg_path = os.path.join(dir_path, "playwright.cfg")
         home_path = os.path.expanduser('~')
+        print(home_path)
         modified_string = cfg_path.replace("/root", home_path)
         print(modified_string)
         with open(modified_string, "r") as file:
