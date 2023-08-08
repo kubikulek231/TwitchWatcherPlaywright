@@ -54,8 +54,10 @@ class TwitchHandler:
             return viewer_number
 
     def twitch_channel_is_live(self, channel: str = None) -> bool:
-        if channel is not None:
-            self.twitch_stream_player_open(channel)
+        if channel is None:
+            return False
+        self.twitch_stream_player_open(channel)
+        RandomSleep.sleep(3, 2)
         if self._browser_handler.element_get_name(
                 '//*[@id="root"]/div/div/div/div[1]/div/div[2]/div/div/div[3]'
                 '/div[2]/div[1]/div/div/div[1]/div/div[1]/div/p') is None:

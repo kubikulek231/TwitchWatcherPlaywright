@@ -57,7 +57,6 @@ class WatcherRoutine:
     def perform_channel_search(self) -> None:
         oc = self.output_data_container
         for channel in self._input_data_container.channels:
-            RandomSleep.sleep(3, 2)
             if self._twitch_handler.twitch_channel_is_live(channel):
                 oc.stream_channel = channel
                 return
