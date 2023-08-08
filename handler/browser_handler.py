@@ -55,7 +55,7 @@ class BrowserHandler:
             file.write('\n// Force Firefox volume to 0'
                        '\npref("media.volume_scale", "0.0");')
 
-    def browser_start(self, headless: bool = False) -> bool:
+    def browser_start(self, headless: bool = True) -> bool:
         if self._browser is None:
             self._playwright = sync_playwright().start()
             if not self._is_no_audio_pref_in_playwright_cfg():
