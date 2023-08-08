@@ -45,7 +45,7 @@ class UIHandlerRun:
         self._watcher_working()
         keyboard.unhook(listener)
         print(f"\n {UIDataManager.get_current_time_string()} @User: watcher STOPPED successfully\n")
-
+        input(" Press a key to exit")
         for i in range(5, 0, -1):
             print(f" Exiting in {i}")
             time.sleep(1)

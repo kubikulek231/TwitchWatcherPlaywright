@@ -2,6 +2,7 @@ import os.path
 
 import playwright.async_api
 from playwright.sync_api import sync_playwright
+from playwright_stealth import stealth_sync
 
 from misc.random_sleep import RandomSleep
 
@@ -61,7 +62,15 @@ class BrowserHandler:
             if not self._is_no_audio_pref_in_playwright_cfg():
                 print('           *adding pref("media.volume_scale", "0.0") to playwright.cfg')
                 self._set_no_audio_pref_in_playwright_cfg()
+            user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
             self._browser = self._playwright.firefox.launch(headless=headless)
+            """self._context = self._browser.new_context(viewport={'width': 1280, 'height': 1024},
+                                                      geolocation={"longitude": 50.075539, "latitude": 14.437800},
+                                                      permissions=["geolocation"], color_scheme='dark',
+                                                      locale='cs-CZ',
+                                                      timezone_id='Europe/Prague',
+                                                      user_agent=user_agent
+                                                      )"""
             self._context = self._browser.new_context()
             return True
         return False
@@ -78,6 +87,7 @@ class BrowserHandler:
 
     def browser_open_new_tab(self) -> bool:
         self._page_list.append(self._context.new_page())
+        stealth_sync(self._page_list[self.tab_index_max])
         return self.browser_switch_to_tab(self.tab_index_max)
 
     def browser_close_tab(self, tab_index: int) -> bool:
