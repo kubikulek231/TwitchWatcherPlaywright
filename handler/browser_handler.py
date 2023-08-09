@@ -100,9 +100,9 @@ class BrowserHandler:
             return True
         return False
 
-    def browser_goto_page(self, url: str) -> None:
+    def browser_goto_page(self, url: str, timeout: float = 90) -> None:
         page = self._page_list[self._tab_index_current]
-        page.goto(url)
+        page.goto(url, timeout=timeout * 1000)
 
     def element_is_present(self, xpath: str, timeout: float = 5) -> ElementHandle:
         try:
