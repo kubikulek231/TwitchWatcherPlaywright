@@ -1,7 +1,6 @@
 import os.path
 
-import playwright.async_api
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, TimeoutError, ElementHandle
 from playwright_stealth import stealth_sync
 
 from misc.random_sleep import RandomSleep
@@ -63,7 +62,7 @@ class BrowserHandler:
                 print('           *adding pref("media.volume_scale", "0.0") to playwright.cfg')
                 self._set_no_audio_pref_in_playwright_cfg()
             self._browser = self._playwright.firefox.launch(headless=False)
-            self._context = self._browser.new_context(device_scale_factor=0.5, viewport={'width': 1280, 'height': 720})
+            self._context = self._browser.new_context(viewport={'width': 1024, 'height': 720})
             return True
         return False
 
@@ -105,15 +104,15 @@ class BrowserHandler:
         page = self._page_list[self._tab_index_current]
         page.goto(url)
 
-    def element_is_present(self, xpath: str, timeout: float = 5) -> playwright.async_api.ElementHandle:
+    def element_is_present(self, xpath: str, timeout: float = 5) -> ElementHandle:
         try:
             page = self._page_list[self._tab_index_current]
             element = page.wait_for_selector(xpath, timeout=timeout * 1000)
             return element
-        except playwright.sync_api.TimeoutError:
+        except TimeoutError:
             pass
 
-    def element_is_invisible_present(self, xpath: str, timeout: float = 5) -> playwright.async_api.ElementHandle:
+    def element_is_invisible_present(self, xpath: str, timeout: float = 5) -> ElementHandle:
         try:
             page = self._page_list[self._tab_index_current]
             return page.query_selector(xpath, timeout=timeout * 1000)
@@ -125,7 +124,7 @@ class BrowserHandler:
             page = self._page_list[self._tab_index_current]
             element = page.wait_for_selector(xpath, state="attached", timeout=timeout * 1000)
             return element.is_enabled()
-        except playwright.sync_api.TimeoutError:
+        except TimeoutError:
             pass
 
     def element_click(self, xpath: str, timeout: float = 5) -> bool:
@@ -135,7 +134,7 @@ class BrowserHandler:
             element.click()
             RandomSleep.sleep(4, 3)
             return True
-        except playwright.sync_api.TimeoutError:
+        except TimeoutError:
             pass
 
     def element_force_click(self, xpath: str, timeout: float = 5) -> bool:
@@ -145,7 +144,7 @@ class BrowserHandler:
             page.evaluate('(element) => element.click()', element)
             RandomSleep.sleep(4, 3)
             return True
-        except playwright.sync_api.TimeoutError:
+        except TimeoutError:
             pass
 
     def element_get_name(self, xpath: str, attribute: str = 'class', timeout: float = 5) -> str:
@@ -153,7 +152,7 @@ class BrowserHandler:
             page = self._page_list[self._tab_index_current]
             element = page.wait_for_selector(xpath, timeout=timeout * 1000)
             return element.get_attribute(attribute)
-        except playwright.sync_api.TimeoutError:
+        except TimeoutError:
             pass
 
     def element_get_text(self, xpath: str, timeout: float = 5) -> str:
@@ -161,7 +160,7 @@ class BrowserHandler:
             page = self._page_list[self._tab_index_current]
             element = page.wait_for_selector(xpath, timeout=timeout * 1000)
             return element.text_content()
-        except playwright.sync_api.TimeoutError:
+        except TimeoutError:
             pass
 
     def elements_is_any_present(self, xpath: str) -> bool:
@@ -169,6 +168,7 @@ class BrowserHandler:
         try:
             element_list = page.query_selector_all(xpath)
             if element_list is not None:
+                print(f"found {len(element_list)} elements")
                 return len(element_list) > 0
             return False
         except Exception:

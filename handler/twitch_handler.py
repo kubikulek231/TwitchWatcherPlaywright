@@ -25,6 +25,19 @@ class TwitchHandler:
     def twitch_stream_player_confirm_warning(self) -> bool:
         return self._browser_handler.element_click('//*[@id="channel-player-gate"]/div/div/div[4]/div/button')
 
+    def twitch_is_accept_cookies(self) -> bool:
+        cookie_accept_button_xpath = '//button[@data-a-target="consent-banner-accept"]'
+        button_element = self._browser_handler.element_is_present(cookie_accept_button_xpath)
+        if button_element is None:
+            return False
+        return True
+
+    def twitch_accept_cookies(self) -> bool:
+        cookie_accept_button_xpath = '//button[@data-a-target="consent-banner-accept"]'
+        if self._browser_handler.element_click(cookie_accept_button_xpath):
+            return True
+        return False
+
     def twitch_stream_player_unmute(self) -> bool:
         RandomSleep.sleep(2, 3)
         volume_slider_element_xpath = '//input[@class="ScRangeInput-sc-q01wc3-0 ePJIVh tw-range"]'
@@ -66,7 +79,7 @@ class TwitchHandler:
 
     def twitch_chat_open(self, channel) -> None:
         self._browser_handler.browser_goto_page(
-            f"https://www.twitch.tv/popout/{channel}/chat?popout=")
+            f"https://www.twitch.tv/{channel}/chat")
 
     def twitch_chat_get_points(self) -> str:
         points_value_xpath = '//span[@class="ScAnimatedNumber-sc-1iib0w9-0"]'

@@ -64,6 +64,8 @@ class Watcher:
                 oc.routine_state = WatcherRoutineState.CHECKING_LOGIN_STATUS
                 self.__queue_put(oc)
                 watcher_routine.perform_twitch_login_check()
+            if not stop_event.is_set():
+                watcher_routine.perform_twitch_accept_cookies()
 
         except WatcherCriticalError as e:
             oc.critical_error = True

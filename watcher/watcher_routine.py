@@ -54,6 +54,11 @@ class WatcherRoutine:
             raise WatcherCriticalError("Failed to login")
 
     @using_tab(0)
+    def perform_twitch_accept_cookies(self) -> None:
+        if self._twitch_handler.twitch_is_accept_cookies():
+            self._twitch_handler.twitch_accept_cookies()
+
+    @using_tab(0)
     def perform_channel_search(self) -> None:
         oc = self.output_data_container
         for channel in self._input_data_container.channels:
