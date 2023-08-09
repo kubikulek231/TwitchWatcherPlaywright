@@ -62,9 +62,8 @@ class BrowserHandler:
             if not self._is_no_audio_pref_in_playwright_cfg():
                 print('           *adding pref("media.volume_scale", "0.0") to playwright.cfg')
                 self._set_no_audio_pref_in_playwright_cfg()
-            user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
             self._browser = self._playwright.firefox.launch(headless=False)
-            self._context = self._browser.new_context()
+            self._context = self._browser.new_context(device_scale_factor=0.5, viewport={'width': 1280, 'height': 1024})
             return True
         return False
 
